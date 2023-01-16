@@ -1,9 +1,11 @@
 package bg.softuni.Pathfinder.model;
 
+import bg.softuni.Pathfinder.model.enums.Level;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
+
 
 @Entity
 @Table(name = "routes")
@@ -25,13 +27,28 @@ public class Route {
     @ManyToOne
     private User author;
 
+    @OneToMany(mappedBy = "route")
+    private  Set<Picture> pictures;
     private String videoUrl;
 
     @OneToMany(targetEntity = Comment.class,mappedBy = "route",cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public Route setCategories(Set<Category> categories) {
+        this.categories = categories;
+        return this;
+    }
+
+    @ManyToMany
+    private Set<Category> categories;
+
     public Route(){
         this.comments = new HashSet<>();
+        this.categories = new HashSet<>();
     }
 
     public long getId() {
@@ -85,6 +102,24 @@ public class Route {
 
     public Route setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+        return this;
+    }
+
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
+
+    public Route setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
+        return this;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public Route setComments(Set<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 }
